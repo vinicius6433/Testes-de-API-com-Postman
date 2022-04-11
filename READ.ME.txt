@@ -1,3 +1,5 @@
 Teste de API com postman:
 
-Sites usados: https://fakerestapi.azurewebsites.net/api/v1/Activities
+Sites usados: 
+
+Swagger => https://fakerestapi.azurewebsites.net/api/v1/Activities
