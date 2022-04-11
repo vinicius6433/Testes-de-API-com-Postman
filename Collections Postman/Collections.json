@@ -1,0 +1,151 @@
+{
+	"info": {
+		"_postman_id": "6f9a8f2b-1836-43d9-be10-2a238ebc33b9",
+		"name": "Testes de API com postman",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Swagger Atividades Get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"//validações de resposta\r",
+							"pm.test(\"Teste de resposta: 200, com have.status\",  function (){\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Validando nome do status com arrow function\",()=>{\r",
+							"    pm.response.to.have.status(\"OK\")\r",
+							"});\r",
+							"pm.test(\"Validando resposta: 200, com expect e eql\", () => {\r",
+							"  pm.expect(pm.response.code).to.eql(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validando tipo de conteúdo\",()=>{\r",
+							"    pm.response.to.have.header(\"Content-type\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validando valor do content-type é um json\",()=>{\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json; charset=utf-8; v=1.0\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Validando tempo de resposta, esperando que o tempo de resposta esteja abaixo de 300ms\",()=>{\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(300)\r",
+							"})\r",
+							"\r",
+							"// validações body\r",
+							"\r",
+							"const jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"pm.test(\"Validando id 1 pelo body\",()=>{\r",
+							"    pm.expect(jsonData[0].id).to.eql(1)\r",
+							"})\r",
+							"pm.test(\"Validando titulo \",()=>{\r",
+							"    pm.expect(jsonData[0].title).to.eql(\"Activity 1\")\r",
+							"})\r",
+							"pm.test(\"Validando se o boolean do id 1 é igual a false\",()=>{\r",
+							"    pm.expect(jsonData[0].completed).to.eql(false)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Validando a tipagem do id é de uma string\",()=>{\r",
+							"    pm.expect(jsonData[0].title).to.be.an(\"string\")\r",
+							"})\r",
+							"\r",
+							"// Agrupamento de testes\r",
+							"pm.test(\"Agrupamento de testes\",()=>{\r",
+							"    pm.expect(jsonData[0].title).to.be.an(\"string\")\r",
+							"    pm.expect(jsonData[0].completed).to.eql(false)\r",
+							"})\r",
+							"\r",
+							"// variavel\r",
+							"pm.test(\"Guardando variavel\", ()=>{\r",
+							"    pm.environment.set(\"ID-3\",jsonData[3].id)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{urlAzure}}api/v1/Activities",
+					"host": [
+						"{{urlAzure}}api"
+					],
+					"path": [
+						"v1",
+						"Activities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Swagger Teste de exclusão",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{urlAzure}}/api/v1/Activities/{{ID-NEW}}",
+					"host": [
+						"{{urlAzure}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Activities",
+						"{{ID-NEW}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Swagger Atividades Post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonDataReq = JSON.parse(request.data);\r",
+							"\r",
+							"pm.test(\"Guardar Variável\",()=>{\r",
+							"    pm.environment.set(\"ID-NEW\", jsonDataReq.id);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 31,\r\n  \"title\": \"Testes para Delecao\",\r\n  \"dueDate\": \"2022-04-11T20:22:13.188Z\",\r\n  \"completed\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{urlAzure}}api/v1/Activities",
+					"host": [
+						"{{urlAzure}}api"
+					],
+					"path": [
+						"v1",
+						"Activities"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
